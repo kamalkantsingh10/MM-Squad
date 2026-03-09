@@ -84,7 +84,7 @@ development_status:
 
   # Epic 6: Po Analysis Agent (stories not yet broken down)
   epic-6: in-progress
-  6-1-po-poc-codebase-callgraph-demo: in-progress
+  6-1-po-poc-codebase-callgraph-demo: review
   epic-6-retrospective: optional
 
   # Epic 7: End-to-End Pipeline Validation (stories not yet broken down)
