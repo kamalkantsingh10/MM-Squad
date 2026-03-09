@@ -1,0 +1,28 @@
+# Create Story - New Module Issue with Labels and Milestone
+name: create-story
+description: "Create a new module Issue with complexity label and milestone assignment"
+
+config_source: "{project-root}/_bmad/mm/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+date: system-generated
+
+installed_path: "{project-root}/_bmad/mm/workflows/pm/create-story"
+template: false
+instructions: "{installed_path}/steps/step-00-discover-documents.md"
+
+# GitLab MCP tools used by this workflow
+mcp_tools:
+  - list_milestones
+  - list_epics
+  - create_issue
+  - apply_label
+  - assign_to_milestone
+
+# Smart input file references
+input_file_patterns:
+  module_analysis:
+    description: "Po's module analysis for complexity and description context"
+    whole: "{project-root}/documents/planning-artifacts/*module*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*module*/*.md"
+    load_strategy: "SELECTIVE_LOAD"

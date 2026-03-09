@@ -1,0 +1,33 @@
+[tool.poetry]
+name = "mm-squad"
+version = "0.1.0"
+description = "BMAD expansion pack for mainframe modernisation - AI agent pipeline with 7 agents and 5 MCP servers"
+authors = []
+readme = "README.md"
+packages = [
+    { include = "cobol_parser_mcp", from = "mcp-servers" },
+    { include = "specdb_mcp", from = "mcp-servers" },
+    { include = "delta_macros_mcp", from = "mcp-servers" },
+    { include = "jcl_parser_mcp", from = "mcp-servers" },
+    { include = "gitlab_mcp", from = "mcp-servers" },
+    { include = "shared", from = "mcp-servers" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+fastmcp = "3.1.0"
+aiosqlite = "0.22.1"
+lark = "0.12.0"
+python-gitlab = "8.1.0"
+python-dotenv = "1.1.0"
+python-pptx = "^1.0.2"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

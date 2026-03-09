@@ -1,0 +1,3 @@
+# COBOL Parser MCP Server — configuration
+# Comma-separated list of directories containing COBOL source files
+source_paths: []

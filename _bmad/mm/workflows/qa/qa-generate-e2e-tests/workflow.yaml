@@ -1,0 +1,49 @@
+# MM QA Test Generation Workflow
+name: qa-generate-e2e-tests
+description: 'Generate automated validation tests for migrated code against business rules'
+
+# Critical variables from MM config
+config_source: "{project-root}/_bmad/mm/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+date: system-generated
+
+# Workflow components
+installed_path: "{project-root}/_bmad/mm/workflows/qa/qa-generate-e2e-tests"
+instructions: "{installed_path}/instructions.md"
+validation: "{installed_path}/checklist.md"
+template: false
+
+# Variables and inputs
+test_dir: "{project-root}/tests"
+source_dir: "{project-root}"
+implementation_artifacts: "{project-root}/documents/implementation-artifacts"
+
+# Output configuration
+default_output_file: "{implementation_artifacts}/tests/test-summary.md"
+
+# GitLab MCP tools for epic sign-off and quality gates
+mcp_tools:
+  - apply_label
+  - add_comment
+  - close_epic
+
+# Input documents: validate generated code against Po's business rules
+# No specdb-mcp access — QA validates against documents only
+input_file_patterns:
+  business_rules:
+    description: "Po's extracted business rules for validation baseline"
+    whole: "{project-root}/documents/planning-artifacts/*business-rules*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*business-rules*/*.md"
+    load_strategy: "SELECTIVE_LOAD"
+  architecture:
+    description: "Oogway's architecture for structural validation"
+    whole: "{project-root}/documents/planning-artifacts/*architecture*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*architecture*/*.md"
+    load_strategy: "FULL_LOAD"
+
+tags:
+  - qa
+  - automation
+  - testing
+  - migration-validation

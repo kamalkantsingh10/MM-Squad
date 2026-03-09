@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "gitlab-mcp": {
+      "command": "/home/kamal/.cache/pypoetry/virtualenvs/mm-squad-pXoQOMIp-py3.12/bin/python",
+      "args": ["-m", "gitlab_mcp"],
+      "cwd": "/home/kamal/Documents/Garage/MM-Squad",
+      "env": {
+        "PYTHONPATH": "/home/kamal/Documents/Garage/MM-Squad/mcp-servers"
+      }
+    }
+  }
+}

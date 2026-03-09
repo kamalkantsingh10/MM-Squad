@@ -1,0 +1,2 @@
+# Delta Macros MCP Server — configuration
+macro_library_path: "<project-root>/blackjack/macros"

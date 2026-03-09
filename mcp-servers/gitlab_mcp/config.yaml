@@ -1,0 +1,6 @@
+# GitLab MCP Server — configuration
+gitlab_url: "https://gitlab.com"
+gitlab_project: "mainframe-modernization2/blackjack-java"
+group_id: 126252803
+project_id: 80058259
+

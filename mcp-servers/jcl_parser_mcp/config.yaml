@@ -1,0 +1,3 @@
+# JCL Parser MCP Server — configuration
+# Comma-separated list of directories containing JCL source files
+source_paths: []

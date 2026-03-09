@@ -1,0 +1,38 @@
+# MM Code Review Workflow
+name: code-review
+description: 'Perform adversarial code review finding specific issues'
+
+# Critical variables from MM config
+config_source: "{project-root}/_bmad/mm/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+date: system-generated
+
+# Workflow components
+installed_path: "{project-root}/_bmad/mm/workflows/dev/code-review"
+instructions: "{installed_path}/steps/step-01-load-story-and-discover-changes.md"
+validation: "{installed_path}/checklist.md"
+template: false
+
+implementation_artifacts: "{project-root}/documents/implementation-artifacts"
+sprint_status: "{implementation_artifacts}/sprint-status.yaml"
+project_context: "**/project-context.md"
+
+# GitLab MCP tools for review status updates
+mcp_tools:
+  - apply_label
+  - add_comment
+
+# Input documents: Po's output and Oogway's architecture for review context
+# No specdb-mcp access — reviewers validate against documents, not spec layer
+input_file_patterns:
+  architecture:
+    description: "Oogway's migration architecture for review context"
+    whole: "{project-root}/documents/planning-artifacts/*architecture*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*architecture*/*.md"
+    load_strategy: "FULL_LOAD"
+  business_rules:
+    description: "Po's extracted business rules for validation"
+    whole: "{project-root}/documents/planning-artifacts/*business-rules*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*business-rules*/*.md"
+    load_strategy: "SELECTIVE_LOAD"

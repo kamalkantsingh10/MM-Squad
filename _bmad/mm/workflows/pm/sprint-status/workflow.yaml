@@ -1,0 +1,18 @@
+# Sprint Status - Current Sprint Progress & Blockers
+name: sprint-status
+description: "View current sprint progress, burndown, and blockers"
+
+config_source: "{project-root}/_bmad/mm/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+date: system-generated
+
+installed_path: "{project-root}/_bmad/mm/workflows/pm/sprint-status"
+template: false
+instructions: "{installed_path}/steps/step-01-identify-active-milestone.md"
+
+# GitLab MCP tools used by this workflow
+mcp_tools:
+  - list_milestones
+  - get_milestone_burndown
+  - update_readme

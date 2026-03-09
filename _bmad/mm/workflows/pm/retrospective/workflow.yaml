@@ -1,0 +1,19 @@
+# Retrospective - Sprint Summary & Learnings
+name: retrospective
+description: "Generate sprint summary, identify learnings, post to Epic"
+
+config_source: "{project-root}/_bmad/mm/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+date: system-generated
+
+installed_path: "{project-root}/_bmad/mm/workflows/pm/retrospective"
+template: false
+instructions: "{installed_path}/steps/step-01-gather-scope.md"
+
+# GitLab MCP tools used by this workflow
+mcp_tools:
+  - list_milestones
+  - list_epics
+  - get_milestone_burndown
+  - add_comment

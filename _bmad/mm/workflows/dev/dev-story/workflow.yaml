@@ -1,0 +1,39 @@
+# MM Dev Story - Execute story implementation
+name: dev-story
+description: 'Execute story implementation following a context filled story spec file'
+
+# Critical variables from MM config
+config_source: "{project-root}/_bmad/mm/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+date: system-generated
+
+# Workflow components
+installed_path: "{project-root}/_bmad/mm/workflows/dev/dev-story"
+instructions: "{installed_path}/steps/step-01-find-story.md"
+validation: "{installed_path}/checklist.md"
+
+story_file: "" # Explicit story path; auto-discovered if empty
+implementation_artifacts: "{project-root}/documents/implementation-artifacts"
+sprint_status: "{implementation_artifacts}/sprint-status.yaml"
+project_context: "**/project-context.md"
+
+# GitLab MCP tools for progress tracking
+mcp_tools:
+  - apply_label
+  - add_comment
+
+# Input documents: Po's output documents (business markdown, architecture docs)
+# Dev agents consume documents, NOT the spec layer directly
+# No specdb-mcp access — agents read Po's extracted business rules and Oogway's architecture
+input_file_patterns:
+  business_rules:
+    description: "Po's extracted business rules for implementation context"
+    whole: "{project-root}/documents/planning-artifacts/*business-rules*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*business-rules*/*.md"
+    load_strategy: "SELECTIVE_LOAD"
+  architecture:
+    description: "Oogway's migration architecture for target design"
+    whole: "{project-root}/documents/planning-artifacts/*architecture*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*architecture*/*.md"
+    load_strategy: "FULL_LOAD"

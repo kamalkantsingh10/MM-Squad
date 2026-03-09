@@ -1,0 +1,13 @@
+# MM Expansion Pack Configuration
+# Agent-level settings shared across all MM agents
+# MCP server config is independent — each server has its own config.yaml and .env
+
+project_name: "MM-Squad"
+user_name: "Kamal"
+communication_language: "English"
+
+# Glossary
+glossary_path: "<project-root>/blackjack/glossary.md"
+
+# Target language (TBD — set by Oogway during migration architecture)
+target_language: ""

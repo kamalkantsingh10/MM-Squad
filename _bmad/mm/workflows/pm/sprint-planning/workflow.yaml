@@ -1,0 +1,33 @@
+# Sprint Planning - Create Sprint Milestone & Assign Modules
+name: sprint-planning
+description: "Create sprint milestone, assign Issues respecting dependency order"
+
+config_source: "{project-root}/_bmad/mm/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+date: system-generated
+
+installed_path: "{project-root}/_bmad/mm/workflows/pm/sprint-planning"
+template: false
+instructions: "{installed_path}/steps/step-00-discover-documents.md"
+checklist: "{installed_path}/checklist.md"
+
+# GitLab MCP tools used by this workflow
+mcp_tools:
+  - list_milestones
+  - create_milestone
+  - assign_to_milestone
+  - get_milestone_burndown
+
+# Smart input file references
+input_file_patterns:
+  dependency_analysis:
+    description: "Po's dependency analysis for migration order"
+    whole: "{project-root}/documents/planning-artifacts/*dependency*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*dependency*/*.md"
+    load_strategy: "FULL_LOAD"
+  module_analysis:
+    description: "Po's module analysis with complexity scores for capacity planning"
+    whole: "{project-root}/documents/planning-artifacts/*module*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*module*/*.md"
+    load_strategy: "FULL_LOAD"

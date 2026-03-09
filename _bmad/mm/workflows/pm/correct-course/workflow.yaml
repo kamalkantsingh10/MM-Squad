@@ -1,0 +1,29 @@
+# Correct Course - Mid-Sprint Scope Adjustment
+name: correct-course
+description: "Adjust sprint scope, reassign Issues, manage mid-sprint changes"
+
+config_source: "{project-root}/_bmad/mm/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+date: system-generated
+
+installed_path: "{project-root}/_bmad/mm/workflows/pm/correct-course"
+template: false
+instructions: "{installed_path}/steps/step-00-discover-documents.md"
+checklist: "{installed_path}/checklist.md"
+
+# GitLab MCP tools used by this workflow
+mcp_tools:
+  - list_milestones
+  - assign_to_milestone
+  - apply_label
+  - add_comment
+  - get_milestone_burndown
+
+# Smart input file references
+input_file_patterns:
+  dependency_analysis:
+    description: "Po's dependency analysis to validate reassignment won't break migration order"
+    whole: "{project-root}/documents/planning-artifacts/*dependency*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*dependency*/*.md"
+    load_strategy: "FULL_LOAD"

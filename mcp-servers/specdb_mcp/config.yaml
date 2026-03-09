@@ -1,0 +1,2 @@
+# Spec Database MCP Server — configuration
+db_path: "<project-root>/data/specdb.sqlite"

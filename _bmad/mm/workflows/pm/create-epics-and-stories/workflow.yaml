@@ -1,0 +1,40 @@
+# Create Epics and Stories - GitLab Project Initialisation
+name: create-epics-and-stories
+description: "Initialize GitLab project with Epics and per-module Issues"
+
+config_source: "{project-root}/_bmad/mm/config.yaml"
+user_name: "{config_source}:user_name"
+communication_language: "{config_source}:communication_language"
+gitlab_url: "{config_source}:gitlab_url"
+date: system-generated
+
+installed_path: "{project-root}/_bmad/mm/workflows/pm/create-epics-and-stories"
+template: false
+instructions: "{installed_path}/steps/step-00-discover-documents.md"
+checklist: "{installed_path}/checklist.md"
+
+# GitLab MCP tools used by this workflow
+mcp_tools:
+  - init_project
+  - create_epic
+  - create_issue
+  - apply_label
+  - create_labels
+
+# Smart input file references
+input_file_patterns:
+  dependency_analysis:
+    description: "Po's dependency analysis with subsystem groupings and migration order"
+    whole: "{project-root}/documents/planning-artifacts/*dependency*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*dependency*/*.md"
+    load_strategy: "FULL_LOAD"
+  module_analysis:
+    description: "Po's module analysis with complexity scores"
+    whole: "{project-root}/documents/planning-artifacts/*module*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*module*/*.md"
+    load_strategy: "FULL_LOAD"
+  architecture:
+    description: "Architecture decisions for subsystem grouping context"
+    whole: "{project-root}/documents/planning-artifacts/*architecture*.md"
+    sharded: "{project-root}/documents/planning-artifacts/*architecture*/*.md"
+    load_strategy: "FULL_LOAD"
