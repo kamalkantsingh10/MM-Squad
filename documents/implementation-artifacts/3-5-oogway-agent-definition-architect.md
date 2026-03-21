@@ -1,3 +1,5 @@
+> **NOTE: Oogway has been reassigned to Auditor (quality gate guardian). The Migration Architect role is now handled by Tigress (`/bmad-agent-mm-tigress`). This story documents the original implementation.**
+
 # Story 3.5: Oogway Agent Definition (Architect)
 
 Status: review

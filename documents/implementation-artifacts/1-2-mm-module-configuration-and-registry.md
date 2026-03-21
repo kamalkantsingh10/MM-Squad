@@ -11,9 +11,9 @@ So that the BMAD installer can discover and deploy all MM agents and workflows.
 ## Acceptance Criteria
 
 1. **MM config.yaml** — `_bmad/mm/config.yaml` contains all required fields: `db_path` (default: `<project-root>/data/specdb.sqlite`), `macro_library_path`, `glossary_path`, `source_paths`, `gitlab_url`, `project_name`. No credentials stored in the file.
-2. **Module help registry** — `_bmad/mm/module-help.csv` lists all 7 MM agents with slash command names and all MM workflows with slash command names.
+2. **Module help registry** — `_bmad/mm/module-help.csv` lists all 8 MM agents with slash command names and all MM workflows with slash command names.
 3. **Data templates** — `_bmad/mm/data/glossary-template.md` with markdown table format (`| COBOL Name | Business Term |`), `_bmad/mm/data/macro-template.md` with empty Delta macro document template.
-4. **Party mode roster** — `_bmad/mm/teams/default-party.csv` lists all 7 MM agents for party mode.
+4. **Party mode roster** — `_bmad/mm/teams/default-party.csv` lists all 8 MM agents for party mode.
 
 ## Tasks / Subtasks
 
@@ -29,7 +29,7 @@ So that the BMAD installer can discover and deploy all MM agents and workflows.
   - [x] Verify NO credentials in the file
 - [x] Task 2: Create module-help.csv (AC: 2)
   - [x] Create `_bmad/mm/module-help.csv`
-  - [x] List all 7 agents: Po, Tigress, Viper, Monkey, Shifu, Oogway, Mantis with slash commands (e.g., `bmad-agent-mm-po`)
+  - [x] List all 8 agents: Po, Tigress, Crane, Viper, Monkey, Shifu, Oogway, Tai Lung with slash commands (e.g., `bmad-agent-mm-po`)
   - [x] List all workflows with slash commands (e.g., `bmad-mm-analyse-structure`)
 - [x] Task 3: Create data templates (AC: 3)
   - [x] Create `_bmad/mm/data/` directory
@@ -37,7 +37,7 @@ So that the BMAD installer can discover and deploy all MM agents and workflows.
   - [x] Create `_bmad/mm/data/macro-template.md` — Delta macro document template with sections for macro name, description, expansion pattern, usage context
 - [x] Task 4: Create party mode roster (AC: 4)
   - [x] Create `_bmad/mm/teams/` directory
-  - [x] Create `_bmad/mm/teams/default-party.csv` listing all 7 agents (po, tigress, viper, monkey, shifu, oogway, mantis)
+  - [x] Create `_bmad/mm/teams/default-party.csv` listing all 8 agents (po, tigress, crane, viper, monkey, shifu, oogway, tai-lung)
 
 ## Dev Notes
 
@@ -75,10 +75,10 @@ None — clean implementation.
 
 - Created _bmad/mm/config.yaml with all 7 required fields + target_language (deferred)
 - No credentials in config; GITLAB_TOKEN env var comment included
-- module-help.csv follows bmm format exactly: 7 agent rows + 16 workflow rows, all module=mm
+- module-help.csv follows bmm format exactly: 8 agent rows + 16 workflow rows, all module=mm
 - Glossary template has 3-column table (COBOL Name, Business Term, Description)
 - Macro template has 4 sections (Name, Description, Expansion Pattern, Usage Context)
-- Party roster CSV follows bmm default-party.csv format with all 7 agents
+- Party roster CSV follows bmm default-party.csv format with all 8 agents
 - 17 unit tests covering all 4 ACs — all passing
 - 43 total tests (including Story 1-1) — zero regressions
 

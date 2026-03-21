@@ -42,20 +42,20 @@ This document provides the complete epic and story breakdown for MM-Squad, decom
 - FR17: System writes approved business rules, entities, operations, and data flows to the SQLite spec layer
 - FR18: Analyst can re-run business rule extraction on a module and have the spec layer update idempotently without duplicates
 
-**Migration Architecture (Oogway — Existing BMAD Architect)**
+**Migration Architecture (Tigress — Architect, formerly Oogway)**
 
 - FR19: Architect can initiate migration architecture generation from the populated spec layer
 - FR20: Architect can view a target architecture document mapping COBOL subsystems to target-language services
-- FR21: Architect can specify the target language as an input to Oogway
+- FR21: Architect can specify the target language as an input to Tigress (Architect)
 - FR22: Architect can review and modify the generated architecture before it is finalised
 
-**Code Generation (Tigress / Viper / Monkey — Modified BMAD Dev)**
+**Code Generation (Crane / Viper / Monkey — Modified BMAD Dev)**
 
 - FR23: Developer can initiate target-language code generation for a module from the spec layer and architecture
 - FR24: Developer can view generated target-language code for each COBOL module
 - FR25: Developer can regenerate code for a specific module without affecting other modules
 
-**QA Validation (Mantis — Existing BMAD QA)**
+**QA Validation (Tai Lung — QA, replacing Mantis)**
 
 - FR26: QA can initiate validation of generated code against spec layer business rules
 - FR27: QA can view a validation report showing which business rules are confirmed, partially covered, or missing in the generated code
@@ -179,10 +179,10 @@ This document provides the complete epic and story breakdown for MM-Squad, decom
 **From Architecture — Build Order (PRD Build Strategy):**
 
 - Phase 1 (Foundation): Initial setup, gitlab-mcp, Shifu agent
-- Phase 2 (Remaining Agents): Tigress, Viper, Monkey, Oogway, Mantis
+- Phase 2 (Remaining Agents): Crane, Viper, Monkey, Tigress (Architect), Tai Lung (QA), Oogway (Auditor)
 - Phase 3 (Analysis + MCP): specdb-mcp, delta-macros-mcp, cobol-parser-mcp, jcl-parser-mcp, Po agent, E2E demo
 
-**From Architecture — All 7 MM agents are net-new:**
+**From Architecture — All 8 MM agents are net-new:**
 
 - All agents require full authoring from scratch following BMAD module conventions
 - Agent files live in _bmad/mm/agents/ with corresponding workflows in _bmad/mm/workflows/
@@ -207,16 +207,16 @@ This document provides the complete epic and story breakdown for MM-Squad, decom
 - FR16: Epic 6 — Po business rule validation (confirm/correct/reject)
 - FR17: Epic 4 / Epic 6 — specdb-mcp write tools (Epic 4), consumed by Po workflows (Epic 6)
 - FR18: Epic 4 / Epic 6 — Idempotent spec layer updates (Epic 4), exercised by Po (Epic 6)
-- FR19: Epic 3 — Oogway agent definition and migration architecture workflow
-- FR20: Epic 3 — Oogway target architecture document generation
-- FR21: Epic 3 — Oogway target language input
-- FR22: Epic 3 — Oogway architecture review and modification
-- FR23: Epic 3 — Tigress/Viper/Monkey agent definitions and code generation workflows
+- FR19: Epic 3 — Tigress (Architect) agent definition and migration architecture workflow
+- FR20: Epic 3 — Tigress (Architect) target architecture document generation
+- FR21: Epic 3 — Tigress (Architect) target language input
+- FR22: Epic 3 — Tigress (Architect) architecture review and modification
+- FR23: Epic 3 — Crane/Viper/Monkey agent definitions and code generation workflows
 - FR24: Epic 3 — Dev agents target-language code output
 - FR25: Epic 3 — Dev agents per-module regeneration
-- FR26: Epic 3 / Epic 7 — Mantis agent definition (Epic 3), validated in E2E pipeline (Epic 7)
-- FR27: Epic 3 / Epic 7 — Mantis validation report (Epic 3), proven in E2E pipeline (Epic 7)
-- FR28: Epic 3 / Epic 7 — Mantis rework flagging (Epic 3), proven in E2E pipeline (Epic 7)
+- FR26: Epic 3 / Epic 7 — Tai Lung agent definition (Epic 3), validated in E2E pipeline (Epic 7)
+- FR27: Epic 3 / Epic 7 — Tai Lung validation report (Epic 3), proven in E2E pipeline (Epic 7)
+- FR28: Epic 3 / Epic 7 — Tai Lung rework flagging (Epic 3), proven in E2E pipeline (Epic 7)
 - FR29: Epic 4 — specdb-mcp init_schema tool
 - FR30: Epic 4 — Glossary configuration via config.yaml + agent workflows
 - FR31: Epic 4 — delta-macros-mcp add_macro tool
@@ -277,7 +277,7 @@ Shifu (PM+SM) can initialise a GitLab project with label taxonomy, milestones, i
 ### Epic 3: Dev, Architect & QA Agent Definitions
 *(Phase 2, items 4-8)*
 
-All remaining agent definitions are authored, deployed via `bmad reinstall`, and invocable as slash commands. Tigress (Java), Viper (COBOL), Monkey (Python), Oogway (Architect), Mantis (QA) — each with complete workflow step files and persona definitions following BMAD conventions.
+All remaining agent definitions are authored, deployed via `bmad reinstall`, and invocable as slash commands. Crane (Java), Viper (COBOL), Monkey (Python), Tigress (Architect), Tai Lung (QA), Oogway (Auditor) — each with complete workflow step files and persona definitions following BMAD conventions.
 
 **FRs covered:** FR19-FR28
 
@@ -309,7 +309,7 @@ Po is fully operational with all 3 core workflows: Analyse Structure (semantic c
 ### Epic 7: End-to-End Pipeline Validation
 *(Phase 3, item 14)*
 
-Full pipeline proven on BlackJack corpus (8 modules, 3 copybooks): Po analyse -> Po dependencies -> Po business rules -> Oogway architecture -> Tigress/Viper/Monkey code gen -> Mantis QA validation -> Shifu GitLab tracking. All NFRs validated. BlackJack established as regression baseline.
+Full pipeline proven on BlackJack corpus (8 modules, 3 copybooks): Po analyse -> Po dependencies -> Po business rules -> Tigress architecture -> Crane/Viper/Monkey code gen -> Tai Lung QA validation -> Shifu GitLab tracking. All NFRs validated. BlackJack established as regression baseline.
 
 **FRs covered:** FR26-FR28 (QA validation in live pipeline context), all FRs validated end-to-end
 
@@ -367,7 +367,7 @@ So that the BMAD installer can discover and deploy all MM agents and workflows.
 
 **Given** the `_bmad/mm/` directory exists
 **When** the operator inspects `_bmad/mm/module-help.csv`
-**Then** it lists all 7 MM agents (Po, Tigress, Viper, Monkey, Shifu, Oogway, Mantis) with their slash command names
+**Then** it lists all MM agents (Po, Crane, Viper, Monkey, Shifu, Tigress, Oogway, Tai Lung) with their slash command names
 **And** it lists all MM workflows with their slash command names
 
 **Given** the `_bmad/mm/` directory exists
@@ -377,7 +377,7 @@ So that the BMAD installer can discover and deploy all MM agents and workflows.
 
 **Given** the `_bmad/mm/` directory exists
 **When** the operator inspects `_bmad/mm/teams/`
-**Then** `default-party.csv` exists listing all 7 MM agents for party mode
+**Then** `default-party.csv` exists listing all 8 MM agents for party mode
 
 ### Story 1.3: Shared MCP Server Infrastructure
 
@@ -676,13 +676,13 @@ So that Shifu can be invoked via `/bmad-agent-mm-shifu` and orchestrate all GitL
 
 ## Epic 3: Dev, Architect & QA Agent Definitions
 
-All remaining agent definitions are authored by copying and adapting their base BMAD agents, deployed via `bmad reinstall`, and invocable as slash commands. Tigress (Java), Viper (COBOL), Monkey (Python) mirror the BMAD dev agent. Oogway mirrors the BMAD architect agent. Mantis mirrors the BMAD QA agent. Each retains the full menu and workflow set of its base agent, adapted for mainframe modernisation context. All agents work from documents produced by Po — none access the spec layer directly. All agents have gitlab-mcp access for project management.
+All remaining agent definitions are authored by copying and adapting their base BMAD agents, deployed via `bmad reinstall`, and invocable as slash commands. Crane (Java), Viper (COBOL), Monkey (Python) mirror the BMAD dev agent. Tigress mirrors the BMAD architect agent. Tai Lung mirrors the BMAD QA agent. Oogway serves as the Auditor. Each retains the full menu and workflow set of its base agent, adapted for mainframe modernisation context. All agents work from documents produced by Po — none access the spec layer directly. All agents have gitlab-mcp access for project management.
 
 ### Story 3.1: Dev Agent Workflows — Copy & Adapt from BMAD Dev
 
 As a developer,
 I want all BMAD dev agent workflows copied and adapted for the MM module,
-So that the three dev agents (Tigress, Viper, Monkey) share a common set of MM-adapted dev workflows.
+So that the three dev agents (Crane, Viper, Monkey) share a common set of MM-adapted dev workflows.
 
 **Acceptance Criteria:**
 
@@ -700,27 +700,27 @@ So that the three dev agents (Tigress, Viper, Monkey) share a common set of MM-a
 
 **Given** the adapted dev workflows exist
 **When** all three dev agents reference them
-**Then** Tigress, Viper, and Monkey all point to the same `_bmad/mm/workflows/dev/` directory
+**Then** Crane, Viper, and Monkey all point to the same `_bmad/mm/workflows/dev/` directory
 **And** the agent persona (not the workflow) determines target language behaviour
 
-### Story 3.2: Tigress Agent Definition (Dev — Java)
+### Story 3.2: Crane Agent Definition (Dev — Java)
 
 As an operator,
-I want the Tigress agent fully authored as the Java code generation dev agent,
-So that Tigress can be invoked via `/bmad-agent-mm-tigress` with the full dev agent menu adapted for Java modernisation.
+I want the Crane agent fully authored as the Java code generation dev agent,
+So that Crane can be invoked via `/bmad-agent-mm-crane` with the full dev agent menu adapted for Java modernisation.
 
 **Acceptance Criteria:**
 
 **Given** the BMAD dev agent definition exists
-**When** the developer copies and adapts it to `_bmad/mm/agents/tigress.md`
+**When** the developer copies and adapts it to `_bmad/mm/agents/crane.md`
 **Then** it contains: Java code generation persona, spec layer consumption via Po's documents, mainframe modernisation context
 **And** the menu mirrors the full BMAD dev agent menu (dev-story, code-review, chat, and all other items)
 **And** menu items point to the adapted workflows in `_bmad/mm/workflows/dev/`
 **And** it declares access to `gitlab-mcp` MCP server only
 
 **Given** the MM module is installed via `bmad reinstall`
-**When** the operator invokes `/bmad-agent-mm-tigress`
-**Then** Tigress loads with her Java persona, presents the full dev menu, and responds in character
+**When** the operator invokes `/bmad-agent-mm-crane`
+**Then** Crane loads with his Java persona, presents the full dev menu, and responds in character
 **And** FR23, FR24, FR25 are addressable through the dev-story workflow
 
 ### Story 3.3: Viper Agent Definition (Dev — COBOL)
@@ -761,16 +761,16 @@ So that Monkey can be invoked via `/bmad-agent-mm-monkey` with the full dev agen
 **When** the operator invokes `/bmad-agent-mm-monkey`
 **Then** Monkey loads with his Python persona, presents the full dev menu, and responds in character
 
-### Story 3.5: Oogway Agent Definition (Architect)
+### Story 3.5: Tigress Agent Definition (Architect) & Oogway Agent Definition (Auditor)
 
 As an operator,
-I want the Oogway agent fully authored as the migration architect,
-So that Oogway can be invoked via `/bmad-agent-mm-oogway` with the full architect agent menu adapted for mainframe migration.
+I want the Tigress agent fully authored as the migration architect and Oogway repositioned as the auditor,
+So that Tigress can be invoked via `/bmad-agent-mm-tigress` with the full architect agent menu adapted for mainframe migration, and Oogway can be invoked via `/bmad-agent-mm-oogway` as the auditor.
 
 **Acceptance Criteria:**
 
 **Given** the BMAD architect agent definition and workflows exist
-**When** the developer copies and adapts the agent to `_bmad/mm/agents/oogway.md`
+**When** the developer copies and adapts the agent to `_bmad/mm/agents/tigress.md`
 **Then** it contains: mainframe migration architect persona, consumes Po's output documents for architecture decisions
 **And** the menu mirrors the full BMAD architect agent menu (create-architecture, check-implementation-readiness, chat, and all other items)
 **And** it declares access to `gitlab-mcp` MCP server only
@@ -783,19 +783,28 @@ So that Oogway can be invoked via `/bmad-agent-mm-oogway` with the full architec
 **And** FR19, FR20, FR21, FR22 are addressable through the adapted workflows
 
 **Given** the MM module is installed via `bmad reinstall`
-**When** the operator invokes `/bmad-agent-mm-oogway`
-**Then** Oogway loads with his migration architect persona, presents the full architect menu, and responds in character
+**When** the operator invokes `/bmad-agent-mm-tigress`
+**Then** Tigress loads with her migration architect persona, presents the full architect menu, and responds in character
 
-### Story 3.6: Mantis Agent Definition (QA)
+**Given** the Oogway agent is repositioned as auditor
+**When** the developer authors `_bmad/mm/agents/oogway.md`
+**Then** it contains: auditor persona, reviews and validates architecture and migration outputs
+**And** it declares access to `gitlab-mcp` MCP server only
+
+**Given** the MM module is installed via `bmad reinstall`
+**When** the operator invokes `/bmad-agent-mm-oogway`
+**Then** Oogway loads with his auditor persona, presents the auditor menu, and responds in character
+
+### Story 3.6: Tai Lung Agent Definition (QA, replacing Mantis)
 
 As an operator,
-I want the Mantis agent fully authored as the migration QA validator,
-So that Mantis can be invoked via `/bmad-agent-mm-mantis` with the full QA agent menu adapted for migration validation.
+I want the Tai Lung agent fully authored as the migration QA validator (replacing Mantis),
+So that Tai Lung can be invoked via `/bmad-agent-mm-tai-lung` with the full QA agent menu adapted for migration validation.
 
 **Acceptance Criteria:**
 
 **Given** the BMAD QA agent definition and workflows exist
-**When** the developer copies and adapts the agent to `_bmad/mm/agents/mantis.md`
+**When** the developer copies and adapts the agent to `_bmad/mm/agents/tai-lung.md`
 **Then** it contains: migration validation persona, validates generated code against Po's business rules documents
 **And** the menu mirrors the full BMAD QA agent menu (qa-generate-e2e-tests, chat, and all other items)
 **And** it declares access to `gitlab-mcp` MCP server only
@@ -808,5 +817,53 @@ So that Mantis can be invoked via `/bmad-agent-mm-mantis` with the full QA agent
 **And** FR26, FR27, FR28 are addressable through the adapted workflows
 
 **Given** the MM module is installed via `bmad reinstall`
-**When** the operator invokes `/bmad-agent-mm-mantis`
-**Then** Mantis loads with his QA validation persona, presents the full QA menu, and responds in character
+**When** the operator invokes `/bmad-agent-mm-tai-lung`
+**Then** Tai Lung loads with his QA validation persona, presents the full QA menu, and responds in character
+
+### Story 3.7: Oogway Auditor Workflows — Adapt Moved Workflows for Auditor Context
+
+As an operator,
+I want the validation workflows adapted for Oogway's auditor role,
+So that code review, implementation readiness, and retrospective workflows work correctly when invoked from the auditor menu rather than their original agent contexts.
+
+**Acceptance Criteria:**
+
+**Given** the code-review workflow was moved from `_bmad/mm/workflows/dev/` to `_bmad/mm/workflows/auditor/`
+**When** Oogway invokes the code review via his [CR] menu item
+**Then** the workflow executes correctly with Oogway's auditor persona
+**And** the review perspective is that of an independent auditor, not the developer who wrote the code
+**And** the workflow references are updated to use the `auditor/` path in all config files
+
+**Given** the check-implementation-readiness workflow was moved from `_bmad/mm/workflows/architect/` to `_bmad/mm/workflows/auditor/`
+**When** Oogway invokes implementation readiness via his [IR] menu item
+**Then** the workflow validates PRD, architecture (from Tigress), UX, and epics are complete and aligned
+**And** the workflow executes correctly with Oogway's auditor persona
+
+**Given** the retrospective workflow was moved from `_bmad/mm/workflows/pm/` to `_bmad/mm/workflows/auditor/`
+**When** Oogway invokes the retrospective via his [RR] menu item
+**Then** the workflow executes correctly with Oogway's auditor persona
+**And** the retrospective perspective is that of an independent reviewer assessing the epic outcome
+
+**Given** all three workflows reference workflow YAML configs
+**When** the YAML configs are inspected
+**Then** all `installed_path` fields point to `_bmad/mm/workflows/auditor/` (not the old locations)
+
+### Story 3.8: MM-Specific Validate PRD Workflow for Oogway
+
+As an operator,
+I want an MM-specific Validate PRD workflow tailored for mainframe modernisation,
+So that Oogway can validate PRDs against MM-specific concerns (spec layer coverage, COBOL dialect requirements, MCP server dependencies) in addition to standard PRD validation.
+
+**Acceptance Criteria:**
+
+**Given** the BMM validate-prd workflow exists at `_bmad/bmm/workflows/2-plan-workflows/create-prd/workflow-validate-prd.md`
+**When** the developer creates an MM-specific validation workflow at `_bmad/mm/workflows/auditor/validate-prd/`
+**Then** it includes all standard BMM PRD validation checks
+**And** it adds MM-specific validation: spec layer schema coverage, COBOL dialect requirements, MCP server tool coverage, agent roster completeness, pipeline order consistency
+**And** the validation report flags gaps specific to mainframe modernisation readiness
+
+**Given** the MM validate-prd workflow exists
+**When** Oogway invokes [VP] Validate PRD from his menu
+**Then** the menu item points to the MM-specific workflow (not the BMM one)
+**And** the workflow executes correctly with Oogway's auditor persona
+**And** the output report is saved to `{planning_artifacts}/`

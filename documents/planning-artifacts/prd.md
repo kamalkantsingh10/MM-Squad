@@ -32,8 +32,8 @@ The expansion pack addresses a specific industry failure: traditional agile assu
 This module delivers a reimagined SDLC for COBOL modernisation through:
 
 - **One new BMAD agent (Po)** — the centrepiece analysis agent, built from scratch with multiple independent workflows for structural analysis, dependency mapping, and business rule extraction
-- **Existing BMAD agents used as-is** — Architect (Oogway), PM (Shifu), SM (Shifu), QA (Mantis) require no modification, only access to the new MCP servers
-- **Existing BMAD Dev agent modified** — three variants for Java (Tigress), Python (Monkey), and COBOL (Viper) target code generation
+- **Existing BMAD agents used as-is** — PM (Shifu), SM (Shifu) require no modification, only access to the new MCP servers
+- **Specialised MM agents** — Architect (Tigress), Auditor (Oogway), QA (Tai Lung), and three Dev variants for Java (Crane), Python (Monkey), and COBOL (Viper) target code generation
 - **Five MCP servers** — the capability layer providing COBOL parsing, spec layer CRUD, middleware knowledge, JCL parsing, and GitLab integration
 
 ### Human-Orchestrated, Not Automated
@@ -42,8 +42,8 @@ Unlike a traditional CI/CD pipeline, this is **human-orchestrated**. The analyst
 
 ```
 Po (Analyse Structure) --> Po (Map Dependencies) --> Po (Extract Business Rules)
-    --> Oogway (Migration Architecture) --> Shifu (GitLab Project Setup)
-    --> Tigress/Viper/Monkey (Code Generation) --> Mantis (QA Validation)
+    --> Tigress (Migration Architecture) --> Shifu (GitLab Project Setup)
+    --> Crane/Viper/Monkey (Code Generation) --> Oogway (Code Review) --> Tai Lung (QA Validation)
 ```
 
 Each workflow can be run, re-run, or skipped at the operator's discretion. The spec layer (SQLite) carries context between workflows — the operator carries intent.
@@ -54,9 +54,9 @@ Each workflow can be run, re-run, or skipped at the operator's discretion. The s
 
 **SQLite spec layer as the shared backbone** — `spec_entities`, `spec_operations`, `spec_rules`, `spec_data_flows` — the first open-source formalisation of COBOL program semantics as a relational schema. Every agent consumes structured data, not unstructured markdown.
 
-**Build incrementally, use immediately** — Each MCP server and each agent is independently deployable. After deploying Tigress, you can invoke `/bmad-agent-mm-tigress` and use it — you don't need the full suite to start working.
+**Build incrementally, use immediately** — Each MCP server and each agent is independently deployable. After deploying Crane, you can invoke `/bmad-agent-mm-crane` and use it — you don't need the full suite to start working.
 
-**Existing BMAD agents gain new superpowers** — The PM, Architect, QA, and SM agents you already use get access to COBOL analysis tools and GitLab integration through the MCP servers. No new agents needed for those roles.
+**Existing BMAD agents gain new superpowers** — The PM and SM agents you already use get access to COBOL analysis tools and GitLab integration through the MCP servers. Specialised MM agents handle architecture (Tigress), auditing (Oogway), QA (Tai Lung), and code generation (Crane, Viper, Monkey).
 
 ---
 
@@ -82,12 +82,13 @@ _bmad/mm/
 ├── module-help.csv                # Workflow/agent registry (required by installer)
 ├── agents/
 │   ├── po.md                      # NEW — Analysis agent (structural, deps, business rules)
-│   ├── tigress.md                 # Dev (Java) — code generation from spec layer
+│   ├── tigress.md                 # Architect — migration architecture
+│   ├── crane.md                   # Dev (Java) — code generation from spec layer
 │   ├── viper.md                   # Dev (COBOL) — COBOL modernisation
 │   ├── monkey.md                  # Dev (Python) — code generation from spec layer
 │   ├── shifu.md                   # PM + SM — delivery orchestrator
-│   ├── oogway.md                  # Architect — migration architecture
-│   └── mantis.md                  # QA — migration validation
+│   ├── oogway.md                  # Auditor — PRD validation, code review, implementation readiness, retrospective
+│   └── tai-lung.md                # QA — migration validation
 ├── workflows/
 │   ├── po/
 │   │   ├── analyse-structure/
@@ -171,12 +172,13 @@ After `bmad reinstall`:
 ```
 .claude/commands/
 ├── bmad-agent-mm-po.md                    # Po agent slash command
-├── bmad-agent-mm-tigress.md               # Tigress agent slash command
-├── bmad-agent-mm-viper.md                 # Viper agent slash command
-├── bmad-agent-mm-monkey.md                # Monkey agent slash command
+├── bmad-agent-mm-tigress.md               # Tigress agent slash command (Architect)
+├── bmad-agent-mm-crane.md                 # Crane agent slash command (Dev Java)
+├── bmad-agent-mm-viper.md                 # Viper agent slash command (Dev COBOL)
+├── bmad-agent-mm-monkey.md                # Monkey agent slash command (Dev Python)
 ├── bmad-agent-mm-shifu.md                 # Shifu agent slash command (PM + SM)
-├── bmad-agent-mm-oogway.md                # Oogway agent slash command (Architect)
-├── bmad-agent-mm-mantis.md                # Mantis agent slash command (QA)
+├── bmad-agent-mm-oogway.md                # Oogway agent slash command (Auditor)
+├── bmad-agent-mm-tai-lung.md              # Tai Lung agent slash command (QA)
 ├── bmad-mm-analyse-structure.md           # Po workflow: structural analysis
 ├── bmad-mm-map-dependencies.md            # Po workflow: dependency mapping
 ├── bmad-mm-extract-business-rules.md      # Po workflow: business rules
@@ -192,11 +194,12 @@ After `bmad reinstall`:
 .github/agents/
 ├── bmad-agent-mm-po.agent.md
 ├── bmad-agent-mm-tigress.agent.md
+├── bmad-agent-mm-crane.agent.md
 ├── bmad-agent-mm-viper.agent.md
 ├── bmad-agent-mm-monkey.agent.md
 ├── bmad-agent-mm-shifu.agent.md
 ├── bmad-agent-mm-oogway.agent.md
-├── bmad-agent-mm-mantis.agent.md
+├── bmad-agent-mm-tai-lung.agent.md
 └── ...
 ```
 
@@ -205,12 +208,13 @@ After `bmad reinstall`:
 | Character | Agent Type | Based On | What the MM Agent Adds |
 |---|---|---|---|
 | **Po** | Analysis Agent | **NEW** — built from scratch | Centrepiece. Multiple workflows: structural analysis, dependency mapping, business rule extraction |
-| **Oogway** | Architect | Built on BMAD core (architect pattern) | Mainframe migration persona, spec layer awareness, `specdb-mcp` + `gitlab-mcp` MCP access. Own workflows: create-architecture, check-implementation-readiness |
-| **Shifu** | PM + SM | Built on BMAD core (PM + SM patterns combined) | Combined PM/SM persona, GitLab-native project management, migration status tracking, `gitlab-mcp` + `specdb-mcp` MCP access. Own workflows: create-epics-and-stories, sprint-planning, create-story, sprint-status, correct-course, retrospective |
-| **Tigress** | Dev (Java) | Built on BMAD core (dev pattern) | Java code generation persona, spec layer consumption, `specdb-mcp` + `cobol-parser-mcp` MCP access. Own workflows: dev-story, code-review |
-| **Viper** | Dev (COBOL) | Built on BMAD core (dev pattern) | COBOL modernisation persona, `specdb-mcp` + `cobol-parser-mcp` MCP access. Own workflows: dev-story, code-review |
-| **Monkey** | Dev (Python) | Built on BMAD core (dev pattern) | Python code generation persona, spec layer consumption, `specdb-mcp` + `cobol-parser-mcp` MCP access. Own workflows: dev-story, code-review |
-| **Mantis** | QA | Built on BMAD core (QA pattern) | Migration validation persona (original COBOL vs generated code), `specdb-mcp` + `gitlab-mcp` MCP access. Own workflows: qa-generate-e2e-tests |
+| **Tigress** | Architect | Built on BMAD core (architect pattern) | Migration architecture persona, spec layer awareness, `specdb-mcp` + `gitlab-mcp` MCP access. Own workflows: create-architecture |
+| **Shifu** | PM + SM | Built on BMAD core (PM + SM patterns combined) | Combined PM/SM persona, GitLab-native project management, migration status tracking, `gitlab-mcp` + `specdb-mcp` MCP access. Own workflows: create-epics-and-stories, sprint-planning, create-story, sprint-status, correct-course |
+| **Oogway** | Auditor | Built on BMAD core (quality gate pattern) | Quality gate guardian — validates PRDs, architecture, code, and sprint outcomes. `specdb-mcp` + `gitlab-mcp` MCP access. Own workflows: validate-prd, check-implementation-readiness, code-review, retrospective |
+| **Crane** | Dev (Java) | Built on BMAD core (dev pattern) | Java code generation persona, spec layer consumption, `specdb-mcp` + `cobol-parser-mcp` MCP access. Own workflows: dev-story |
+| **Viper** | Dev (COBOL) | Built on BMAD core (dev pattern) | COBOL modernisation persona, `specdb-mcp` + `cobol-parser-mcp` MCP access. Own workflows: dev-story |
+| **Monkey** | Dev (Python) | Built on BMAD core (dev pattern) | Python code generation persona, spec layer consumption, `specdb-mcp` + `cobol-parser-mcp` MCP access. Own workflows: dev-story |
+| **Tai Lung** | QA | Built on BMAD core (QA pattern) | Migration validation persona (original COBOL vs generated code), `specdb-mcp` + `gitlab-mcp` MCP access. Own workflows: qa-generate-e2e-tests |
 
 ### MCP Servers (Capability Layer)
 
@@ -265,11 +269,12 @@ Phase 1 — Foundation (installer validation + project management):
   Result: Shifu can connect to GitLab, create projects, manage epics/stories/sprints
 
 Phase 2 — Remaining Agents:
-  4. Tigress             # Dev (Java) — code generation from spec layer
-  5. Viper               # Dev (COBOL) — COBOL modernisation
-  6. Monkey              # Dev (Python) — code generation from spec layer
-  7. Oogway              # Architect — migration architecture
-  8. Mantis              # QA — migration validation
+  4. Tigress             # Architect — migration architecture
+  5. Oogway              # Auditor — PRD validation, code review, implementation readiness, retrospective
+  6. Crane               # Dev (Java) — code generation from spec layer
+  7. Viper               # Dev (COBOL) — COBOL modernisation
+  8. Monkey              # Dev (Python) — code generation from spec layer
+  9. Tai Lung            # QA — migration validation
   Result: All agents operational with GitLab connectivity via gitlab-mcp
 
 Phase 3 — Analysis Agent + MCP Servers:
@@ -303,13 +308,13 @@ Phase 3 — Analysis Agent + MCP Servers:
 
 **Claire (Business Validator — Po output consumer):**
 - Business rules correctly extracted on first Po pass: **> 85%**
-- Every business rule traceable: Po markdown -> spec layer -> Tigress output -> Mantis validation
+- Every business rule traceable: Po markdown -> spec layer -> Crane output -> Tai Lung validation
 
 ### Business Success
 
 | Horizon | Objective |
 |---|---|
-| **3 months** | BlackJack pipeline runs end-to-end: Po -> Oogway -> Shifu -> Tigress/Viper/Monkey -> Mantis. Full demo in a single session. |
+| **3 months** | BlackJack pipeline runs end-to-end: Po -> Tigress -> Shifu -> Crane/Viper/Monkey -> Oogway -> Tai Lung. Full demo in a single session. |
 | **6 months** | Pipeline configurable for a real client estate — glossary loaded, `delta-macros-mcp` populated, first real COBOL program analysed |
 | **12 months** | At least one complete application (all modules) processed through to verified GitLab Epics closed |
 
@@ -360,11 +365,11 @@ Po flags the unknown macro, marks the affected paragraph, and continues. Alex wr
 
 ### Journey 3 — Priya Designs Migration Architecture
 
-Priya opens the existing BMAD Architect agent (Oogway). Because `specdb-mcp` is now available, Oogway can query the spec layer directly. Po's dependency map shows three subsystems. `spec_entities` reveals `TAX-BAND` as a shared service candidate.
+Priya opens the Migration Architect agent (Tigress). Because `specdb-mcp` is now available, Tigress can query the spec layer directly. Po's dependency map shows three subsystems. `spec_entities` reveals `TAX-BAND` as a shared service candidate.
 
-Oogway produces a target Java architecture following the seam lines Po surfaced.
+Tigress produces a target Java architecture following the seam lines Po surfaced.
 
-**The moment that matters:** The existing Architect agent gained new capability through MCP servers alone — no agent modification needed.
+**The moment that matters:** The Architect agent gained mainframe migration capability through MCP servers and spec layer awareness.
 
 *Requirements: FR9-FR13, FR19-FR22*
 
@@ -462,20 +467,20 @@ The PM, Architect, QA, and SM agents already exist in BMAD. By adding MCP server
 - **FR17:** System writes approved business rules, entities, operations, and data flows to the SQLite spec layer
 - **FR18:** Analyst can re-run business rule extraction on a module and have the spec layer update idempotently without duplicates
 
-### Migration Architecture (Oogway — Existing BMAD Architect)
+### Migration Architecture (Tigress — Migration Architect)
 
 - **FR19:** Architect can initiate migration architecture generation from the populated spec layer
 - **FR20:** Architect can view a target architecture document mapping COBOL subsystems to target-language services
-- **FR21:** Architect can specify the target language as an input to Oogway
+- **FR21:** Architect can specify the target language as an input to Tigress
 - **FR22:** Architect can review and modify the generated architecture before it is finalised
 
-### Code Generation (Tigress / Viper / Monkey — Modified BMAD Dev)
+### Code Generation (Crane / Viper / Monkey — Dev Agents)
 
 - **FR23:** Developer can initiate target-language code generation for a module from the spec layer and architecture
 - **FR24:** Developer can view generated target-language code for each COBOL module
 - **FR25:** Developer can regenerate code for a specific module without affecting other modules
 
-### QA Validation (Mantis — Existing BMAD QA)
+### QA Validation (Tai Lung — QA Agent)
 
 - **FR26:** QA can initiate validation of generated code against spec layer business rules
 - **FR27:** QA can view a validation report showing which business rules are confirmed, partially covered, or missing in the generated code
@@ -583,8 +588,8 @@ The PM, Architect, QA, and SM agents already exist in BMAD. By adding MCP server
 **Must-Have:**
 - 5 MCP servers fully operational
 - Po agent with 3 core workflows (analyse structure, map dependencies, extract business rules)
-- 3 modified Dev agents (Tigress, Viper, Monkey)
-- Existing BMAD agents (Architect, PM, SM, QA) working with MCP servers
+- 4 specialised agents: Tigress (Architect), Oogway (Auditor), Crane (Dev Java), Tai Lung (QA), plus Viper (Dev COBOL) and Monkey (Dev Python)
+- Existing BMAD agents (PM, SM) working with MCP servers
 - MM module installable via `bmad reinstall`
 
 ### Phase 2 — Expansion Pack Maturity
@@ -597,7 +602,7 @@ The PM, Architect, QA, and SM agents already exist in BMAD. By adding MCP server
 ### Phase 3 — BMAD Ecosystem
 
 - RPG and PL/I language support
-- Behavioural equivalence testing framework in Mantis
+- Behavioural equivalence testing framework in Tai Lung
 - JIRA / Azure DevOps integration (post-GitLab)
 - Factory metrics dashboard across engagements
 
@@ -608,6 +613,7 @@ The PM, Architect, QA, and SM agents already exist in BMAD. By adding MCP server
 | **LLM reliability** — inaccurate COBOL analysis | Corrupt spec layer | Expert review gate steps in every Po workflow |
 | **COBOL dialect gaps** — parser misparses variant syntax | Silent errors propagate | Unrecognised constructs flagged, not ignored; BlackJack regression |
 | **BMAD module pattern untested** — installer doesn't pick up MM module | Can't deploy agents | Tigress first (Phase 2) — validates pattern before building the rest |
+| **Quality gaps between agents** — artifacts pass without proper review | Inconsistent outputs | Oogway as dedicated Auditor validates all artifacts at every gate |
 | **MCP server scope creep** | MVP delayed | Hard boundary: 5 servers, defined tool lists; no additions without PRD change |
 
 ---

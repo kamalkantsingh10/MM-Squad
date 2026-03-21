@@ -1,3 +1,5 @@
+> **NOTE: Tigress has been reassigned to Migration Architect. The Java Dev role is now handled by Crane (`/bmad-agent-mm-crane`). This story documents the original implementation.**
+
 # Story 3.2: Tigress Agent Definition (Dev — Java)
 
 Status: review

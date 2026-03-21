@@ -1,3 +1,5 @@
+> **NOTE: Mantis has been renamed to Tai Lung (`/bmad-agent-mm-tai-lung`). This story documents the original implementation.**
+
 # Story 3.6: Mantis Agent Definition (QA)
 
 Status: review

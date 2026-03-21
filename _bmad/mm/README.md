@@ -7,58 +7,103 @@ BMAD expansion pack module providing AI-driven mainframe modernisation capabilit
 | Agent | Character | Role | MCP Access |
 |-------|-----------|------|------------|
 | **Po** | Panda | Analysis Agent (NEW) | `cobol-parser-mcp`, `specdb-mcp`, `delta-macros-mcp`, `jcl-parser-mcp` |
-| **Oogway** | Tortoise | Migration Architect | `specdb-mcp`, `gitlab-mcp` |
+| **Tigress** | Tiger | Migration Architect | `specdb-mcp`, `gitlab-mcp` |
 | **Shifu** | Red Panda | PM + SM — Delivery Orchestrator | `gitlab-mcp`, `specdb-mcp` |
-| **Tigress** | Tiger | Dev (Java) | `specdb-mcp`, `cobol-parser-mcp` |
+| **Oogway** | Tortoise | Auditor — Quality Gate Guardian | `specdb-mcp`, `gitlab-mcp` |
+| **Crane** | Crane | Dev (Java) | `specdb-mcp`, `cobol-parser-mcp` |
 | **Viper** | Snake | Dev (COBOL) | `specdb-mcp`, `cobol-parser-mcp` |
 | **Monkey** | Monkey | Dev (Python) | `specdb-mcp`, `cobol-parser-mcp` |
-| **Mantis** | Mantis | QA — Migration Validation | `specdb-mcp`, `gitlab-mcp` |
+| **Tai Lung** | Snow Leopard | QA — Migration Validation | `specdb-mcp`, `gitlab-mcp` |
 
 ## Agent Menus
 
-### Po — Analysis Agent
-| # | Command | Workflow |
-|---|---------|----------|
-| 1 | Analyse COBOL Module Structure | `analyse-structure/` — static pre-pass, semantic clustering, AI analysis, review gate, spec write |
-| 2 | Map Cross-Module Dependencies | `map-dependencies/` — regex extraction, graph build, subsystem detection, migration order |
-| 3 | Extract Business Rules | `extract-business-rules/` — consume analysis, extract rules, business markdown, spec layer |
-| 4 | View Consolidated Flags | `view-flags/` — all unresolved constructs and macros across runs |
-| 5 | Chat with Po | Free-form conversation |
+### 🐼 Po — Analysis Agent (`/bmad-agent-mm-po`)
+| Code | Command | Description |
+|------|---------|-------------|
+| MH | Menu Help | Redisplay menu |
+| CH | Chat | Ask questions about the loaded codebase |
+| AS | Analyse Structure | Parse COBOL module — call graph, complexity, anti-patterns, external refs |
+| MD | Map Dependencies | Cross-module dependency graph, subsystems, migration order |
+| BR | Extract Business Rules | Business entities, operations, rules, data flows per module |
+| PM | Party Mode | Multi-agent group discussion |
+| DA | Dismiss Agent | Exit |
 
-### Shifu — PM + SM (Delivery Orchestrator)
-| # | Command | Workflow |
-|---|---------|----------|
-| 1 | Project Initialisation | `create-epics-and-stories/` — GitLab labels, milestones, board, Epics, Issues |
-| 2 | Sprint Planning | `sprint-planning/` — create milestone, assign modules by dependency order |
-| 3 | Create Story | `create-story/` — new module Issue with complexity and milestone |
-| 4 | Sprint Status | `sprint-status/` — progress, burndown, blockers |
-| 5 | Course Correction | `correct-course/` — adjust scope, reassign Issues mid-sprint |
-| 6 | Retrospective | `retrospective/` — sprint summary, learnings, post to Epic |
-| 7 | Party Mode | Multi-agent group discussion |
+### 🐭 Shifu — Delivery Manager (`/bmad-agent-mm-shifu`)
+| Code | Command | Description |
+|------|---------|-------------|
+| MH | Menu Help | Redisplay menu |
+| CH | Chat | Chat with the Agent about anything |
+| PI | Project Initialisation | Set up GitLab project with labels, milestones, board, Epics, and module Issues |
+| SP | Sprint Planning | Create sprint milestone and assign modules respecting dependency order |
+| CS | Create Story | Create a new module Issue with complexity label and milestone assignment |
+| SS | Sprint Status | View current sprint progress, burndown, and blockers |
+| CC | Course Correction | Adjust sprint scope, reassign Issues, manage mid-sprint changes |
+| PM | Party Mode | Multi-agent group discussion |
+| DA | Dismiss Agent | Exit |
 
-### Oogway — Migration Architect
-| # | Command | Workflow |
-|---|---------|----------|
-| 1 | Create Migration Architecture | `create-architecture/` — target architecture from spec layer |
-| 2 | Check Implementation Readiness | `check-implementation-readiness/` — validate specs are complete |
+### 🐯 Tigress — Migration Architect (`/bmad-agent-mm-tigress`)
+| Code | Command | Description |
+|------|---------|-------------|
+| MH | Menu Help | Redisplay menu |
+| CH | Chat | Chat with the Agent about anything |
+| CA | Create Architecture | Migration architecture from Po's analysis and spec layer |
+| PM | Party Mode | Multi-agent group discussion |
+| DA | Dismiss Agent | Exit |
 
-### Tigress / Viper / Monkey — Dev Agents
-| # | Command | Workflow |
-|---|---------|----------|
-| 1 | Dev Story | `dev-story/` — code generation from spec layer + architecture |
-| 2 | Code Review | `code-review/` — adversarial review of generated code |
+### 🐢 Oogway — Auditor (`/bmad-agent-mm-oogway`)
+| Code | Command | Description |
+|------|---------|-------------|
+| MH | Menu Help | Redisplay menu |
+| CH | Chat | Chat with the Agent about anything |
+| VP | Validate PRD | Validate a Product Requirements Document is comprehensive, lean and cohesive |
+| IR | Implementation Readiness | Validate PRD, architecture, UX and epics are complete and aligned |
+| CR | Code Review | Comprehensive adversarial code review across multiple quality facets |
+| RR | Epic Retrospective | Post-epic review to extract lessons and assess success |
+| PM | Party Mode | Multi-agent group discussion |
+| DA | Dismiss Agent | Exit |
 
-### Mantis — QA
-| # | Command | Workflow |
-|---|---------|----------|
-| 1 | Generate E2E Tests | `qa-generate-e2e-tests/` — validate generated code against spec rules |
+### 🦅 Crane — Java Dev Agent (`/bmad-agent-mm-crane`)
+| Code | Command | Description |
+|------|---------|-------------|
+| MH | Menu Help | Redisplay menu |
+| CH | Chat | Chat with the Agent about anything |
+| DS | Dev Story | Write the next or specified story's tests and code |
+| PM | Party Mode | Multi-agent group discussion |
+| DA | Dismiss Agent | Exit |
+
+### 🐍 Viper — COBOL Dev Agent (`/bmad-agent-mm-viper`)
+| Code | Command | Description |
+|------|---------|-------------|
+| MH | Menu Help | Redisplay menu |
+| CH | Chat | Chat with the Agent about anything |
+| DS | Dev Story | Write the next or specified story's tests and code |
+| PM | Party Mode | Multi-agent group discussion |
+| DA | Dismiss Agent | Exit |
+
+### 🐒 Monkey — Python Dev Agent (`/bmad-agent-mm-monkey`)
+| Code | Command | Description |
+|------|---------|-------------|
+| MH | Menu Help | Redisplay menu |
+| CH | Chat | Chat with the Agent about anything |
+| DS | Dev Story | Write the next or specified story's tests and code |
+| PM | Party Mode | Multi-agent group discussion |
+| DA | Dismiss Agent | Exit |
+
+### 🐆 Tai Lung — QA Agent (`/bmad-agent-mm-tai-lung`)
+| Code | Command | Description |
+|------|---------|-------------|
+| MH | Menu Help | Redisplay menu |
+| CH | Chat | Chat with the Agent about anything |
+| QA | Automate | Generate validation tests for migrated code against business rules |
+| PM | Party Mode | Multi-agent group discussion |
+| DA | Dismiss Agent | Exit |
 
 ## Pipeline Order (Guidance, Not Enforcement)
 
 ```
 Po (Analyse Structure) → Po (Map Dependencies) → Po (Extract Business Rules)
-    → Oogway (Migration Architecture) → Shifu (GitLab Project Setup)
-    → Tigress/Viper/Monkey (Code Generation) → Mantis (QA Validation)
+    → Tigress (Migration Architecture) → Shifu (GitLab Project Setup)
+    → Crane/Viper/Monkey (Code Generation) → Oogway (Code Review) → Tai Lung (QA Validation)
 ```
 
 Each workflow is independently runnable. The spec layer (SQLite) carries context between workflows — the operator carries intent.
@@ -73,8 +118,9 @@ Agent-level config lives in `_bmad/mm/config.yaml` (user name, language, glossar
 |-------|--------|
 | Shifu | Implemented — `agents/shifu.md` |
 | Po | Not started |
-| Oogway | Not started |
-| Tigress | Not started |
-| Viper | Not started |
-| Monkey | Not started |
-| Mantis | Not started |
+| Tigress | Implemented — `agents/tigress.md` (Migration Architect) |
+| Oogway | Implemented — `agents/oogway.md` (Auditor) |
+| Crane | Implemented — `agents/crane.md` (Java Dev) |
+| Viper | Implemented — `agents/viper.md` |
+| Monkey | Implemented — `agents/monkey.md` |
+| Tai Lung | Implemented — `agents/tai-lung.md` (QA) |

@@ -28,9 +28,9 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 - **COBOL Analysis (FR1-8):** Po structural analysis — static pre-pass (paragraph call graph, complexity scoring, anti-pattern detection, external reference extraction) followed by AI semantic clustering. Expert review and correction before spec layer writes. Unknown construct flagging is mandatory.
 - **Dependency Mapping (FR9-13):** Po cross-module analysis producing Mermaid dependency graph, subsystem groupings, migration order, circular dependency / dead code detection.
 - **Business Rule Extraction & Spec Layer (FR14-18):** Po business markdown per module plus full population of spec layer SQLite tables. Idempotent re-run support.
-- **Migration Architecture (FR19-22):** Oogway consumes spec layer to produce target architecture. Analyst review before finalisation.
-- **Code Generation (FR23-25):** Tigress (Java), Viper (COBOL), Monkey (Python) generate target-language code from architecture + spec layer context.
-- **QA Validation (FR26-28):** Mantis validates generated code against spec layer business rules. Manages Epic sign-off via GitLab.
+- **Migration Architecture (FR19-22):** Tigress consumes spec layer to produce target architecture. Analyst review before finalisation.
+- **Code Generation (FR23-25):** Crane (Java), Viper (COBOL), Monkey (Python) generate target-language code from architecture + spec layer context.
+- **QA Validation (FR26-28):** Tai Lung validates generated code against spec layer business rules. Manages Epic sign-off via GitLab.
 - **Pipeline Configuration (FR29-34):** Single-command schema init, glossary config, incremental macro updates, BMAD installer, individual workflow re-run, consolidated flag list.
 - **COBOL Dialect Coverage (FR35-39):** IBM Enterprise COBOL, COBOL-85, CICS, DB2 SQL, COPY/copybook resolution, Delta macro resolution via MCP.
 - **GitLab Project Management (FR40-56):** Shifu initialises GitLab project (label taxonomy, milestones, boards). Per-module Issues track pipeline lifecycle. Sprint milestones. Live README dashboard. Business rule sign-off gate. QA Epic sign-off gate.
@@ -47,8 +47,8 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 **Scale & Complexity:**
 
 - Primary domain: Local-first AI agent pipeline / developer tooling (BMAD Expansion Pack)
-- Complexity level: **High** — 7 agents (Po, Oogway, Shifu, Tigress, Viper, Monkey, Mantis), 5 MCP servers, SQLite schema, GitLab integration, COBOL dialect handling, BMAD packaging
-- Estimated architectural components: 5 MCP servers (cobol-parser, specdb, delta-macros, jcl-parser, gitlab), 7 agent definitions, 1 SQLite database, 1 BMAD module installer, 1 glossary system, 1 macro library system
+- Complexity level: **High** — 8 agents (Po, Oogway, Shifu, Tigress, Crane, Viper, Monkey, Tai Lung), 5 MCP servers, SQLite schema, GitLab integration, COBOL dialect handling, BMAD packaging
+- Estimated architectural components: 5 MCP servers (cobol-parser, specdb, delta-macros, jcl-parser, gitlab), 8 agent definitions, 1 SQLite database, 1 BMAD module installer, 1 glossary system, 1 macro library system
 - Deployment model: Single developer machine, greenfield, local-only
 
 ### Technical Constraints & Dependencies
@@ -58,15 +58,15 @@ _This document builds collaboratively through step-by-step discovery. Sections a
 - **MCP protocol compliance:** All 5 MCP servers must use standard MCP protocol — no proprietary extensions. Tools must be versioned and backwards-compatible.
 - **SQLite as the sole database:** No graph database. SQLite is the spec layer intermediate representation between analysis and implementation agents.
 - **LLM as an unreliable actor:** Every AI-produced output must have an explicit review gate before downstream consumption. No AI output is authoritative without analyst sign-off.
-- **Target language TBD for MVP:** Oogway decides the target language — Tigress (Java), Viper (COBOL), or Monkey (Python) handles code generation accordingly. Po's analysis remains target-language agnostic.
+- **Target language TBD for MVP:** Tigress decides the target language — Crane (Java), Viper (COBOL), or Monkey (Python) handles code generation accordingly. Po's analysis remains target-language agnostic.
 - **GitLab dependency:** GitLab (Cloud or self-hosted, API v4) is required for delivery management. Analysis stays local; GitLab manages Epics, Issues, and the status dashboard.
 - **BMAD Expansion Pack identity:** The module installs into `_bmad/mm/` alongside existing modules (core, bmm). Must deploy via standard `bmad reinstall` and appear as slash commands.
 
 ### Cross-Cutting Concerns Identified
 
-1. **Data locality enforcement** — Must be architecturally guaranteed across all 5 MCP servers and all 7 agents. No component should have a code path that transmits source or spec data externally.
+1. **Data locality enforcement** — Must be architecturally guaranteed across all 5 MCP servers and all 8 agents. No component should have a code path that transmits source or spec data externally.
 2. **Idempotency** — Spec layer writes across all agents must be idempotent. Re-running any workflow on any module must produce equivalent output without duplication or contradiction.
-3. **Error propagation (no silent failures)** — Every unrecognised construct, unknown macro, LLM error, or partial write must surface an explicit, actionable error. This crosses all 5 MCP servers and all 7 agents.
+3. **Error propagation (no silent failures)** — Every unrecognised construct, unknown macro, LLM error, or partial write must surface an explicit, actionable error. This crosses all 5 MCP servers and all 8 agents.
 4. **BMAD format compliance** — Agent definitions, workflow files, step files, and config patterns must all conform to BMAD standards. This is a cross-cutting structural constraint on how every component is authored.
 5. **LLM reliability gating** — Human review gates (analyst approval before spec layer writes) are a cross-cutting concern that must be architecturally enforced at every AI-output stage.
 6. **COBOL dialect handling** — Unknown or unsupported constructs must be flagged at the `cobol-parser-mcp` layer and propagated correctly through the pipeline — not silently ignored.
@@ -453,12 +453,13 @@ MM-Squad/                                      # Project root
 │       ├── module-help.csv                    # Workflow/agent registry (required by installer)
 │       ├── agents/
 │       │   ├── po.md                          # NEW — Analysis agent (structure, deps, business rules)
-│       │   ├── tigress.md                     # Dev (Java) — code generation from spec layer
+│       │   ├── tigress.md                     # Architect — migration architecture
+│       │   ├── crane.md                      # Dev (Java) — code generation from spec layer
 │       │   ├── viper.md                       # Dev (COBOL) — COBOL modernisation
 │       │   ├── monkey.md                      # Dev (Python) — code generation from spec layer
 │       │   ├── shifu.md                       # PM + SM — delivery orchestrator
-│       │   ├── oogway.md                      # Architect — migration architecture
-│       │   └── mantis.md                      # QA — migration validation
+│       │   ├── oogway.md                      # Auditor — validate PRD, implementation readiness, code review, retrospective
+│       │   └── tai-lung.md                    # QA — migration validation
 │       ├── workflows/
 │       │   ├── po/
 │       │   │   ├── analyse-structure/
@@ -659,9 +660,9 @@ Every agent can post progress, comments, and status updates to GitLab via
 | FR1-8 (Po/COBOL Analysis) | `cobol-parser-mcp` | `cobol_parser.py`, `call_graph.py`, `cluster_builder.py`, `complexity_scorer.py`, `antipattern_detector.py` |
 | FR9-13 (Po/Dependencies) | `cobol-parser-mcp` + `jcl-parser-mcp` + `specdb-mcp` | Static CALL/COPY deps + JCL runtime deps + spec writes |
 | FR14-18 (Po/Spec Layer) | `specdb-mcp` | `spec_db.py`, `schema.py` (all spec_* tables) |
-| FR19-22 (Oogway/Architecture) | `_bmad/mm/agents/oogway.md` | Agent consumes spec layer via specdb-mcp |
-| FR23-25 (Code Generation) | `_bmad/mm/agents/tigress.md`, `viper.md`, `monkey.md` | Language-specific Dev agents |
-| FR26-28 (QA Validation) | `_bmad/mm/agents/mantis.md` | Validates code against spec_rules; Epic sign-off |
+| FR19-22 (Tigress/Architecture) | `_bmad/mm/agents/tigress.md` | Agent consumes spec layer via specdb-mcp |
+| FR23-25 (Code Generation) | `_bmad/mm/agents/crane.md`, `viper.md`, `monkey.md` | Language-specific Dev agents |
+| FR26-28 (QA Validation) | `_bmad/mm/agents/tai-lung.md` | Validates code against spec_rules; Epic sign-off |
 | FR29 (Schema init) | `specdb-mcp` | `schema.py` `init_schema` tool |
 | FR30 (Glossary config) | `_bmad/mm/config.yaml` + agent workflows | Glossary path in config |
 | FR31 (Add macro) | `delta-macros-mcp` | `macro_library.py` `add_macro` tool |
@@ -679,8 +680,10 @@ COBOL source files
     -> specdb-mcp (write_spec: cobol_files, analyses, dependencies, metrics tables)
     -> delta-macros-mcp (get_macro — called during parse for unknown macros)
     -> specdb-mcp (write_spec: spec_* tables — written by Po workflows)
-    -> oogway.md (consumes spec layer for migration architecture)
-    -> tigress.md / viper.md / monkey.md (code generation from spec + architecture)
+    -> tigress.md (consumes spec layer for migration architecture)
+    -> crane.md / viper.md / monkey.md (code generation from spec + architecture)
+    -> oogway.md (code review — validates implementation against spec + architecture)
+    -> tai-lung.md (QA — validates generated code against spec layer business rules)
     -> gitlab-mcp (create_epic, create_issue, apply_label, update_readme — all agents)
 ```
 
@@ -764,8 +767,8 @@ IDE session by design; data integrity is the persistence guarantee.
 - Glossary file format: markdown table (`| COBOL Name | Business Term |`) —
   simple, human-editable, parseable by agents
 - config.yaml complete schema: `db_path`, `macro_library_path`, `gitlab_url`,
-  `glossary_path`, `source_paths`, `project_name`, `target_language` (TBD by Oogway)
-- All 7 MM agents are net-new — require full authoring from scratch
+  `glossary_path`, `source_paths`, `project_name`, `target_language` (TBD by Tigress)
+- All 8 MM agents are net-new — require full authoring from scratch
   following BMAD module conventions
 
 **Deferred (post-MVP):**
@@ -776,7 +779,7 @@ IDE session by design; data integrity is the persistence guarantee.
 
 **Requirements Analysis**
 - [x] 56 FRs and 21 NFRs analyzed for architectural implications
-- [x] Scale assessed: High complexity, 7 agents, 5 MCP servers
+- [x] Scale assessed: High complexity, 8 agents, 5 MCP servers
 - [x] Hard constraints identified: data locality, BMAD compliance, STDIO transport
 - [x] 7 cross-cutting concerns mapped
 
@@ -841,19 +844,20 @@ Phase 1 — Foundation:
   Validation: MM module installs correctly via BMAD installer
 
 Phase 2 — Remaining Agents:
-  4. Tigress             # Dev (Java)
-  5. Viper               # Dev (COBOL)
-  6. Monkey              # Dev (Python)
-  7. Oogway              # Architect
-  8. Mantis              # QA
+  4. Tigress             # Architect
+  5. Crane               # Dev (Java)
+  6. Viper               # Dev (COBOL)
+  7. Monkey              # Dev (Python)
+  8. Oogway              # Auditor (validate PRD, implementation readiness, code review, retrospective)
+  9. Tai Lung            # QA
 
 Phase 3 — Analysis Agent + MCP Servers:
-  9. specdb-mcp          # SQLite spec layer CRUD
-  10. delta-macros-mcp   # Middleware knowledge base
-  11. cobol-parser-mcp   # COBOL static parsing engine
-  12. jcl-parser-mcp     # JCL parsing
-  13. Po                 # Analysis agent — the big build
-  14. End-to-end demo    # COBOL BlackJack modernisation
+  10. specdb-mcp         # SQLite spec layer CRUD
+  11. delta-macros-mcp   # Middleware knowledge base
+  12. cobol-parser-mcp   # COBOL static parsing engine
+  13. jcl-parser-mcp     # JCL parsing
+  14. Po                 # Analysis agent — the big build
+  15. End-to-end demo    # COBOL BlackJack modernisation
 ```
 
 **AI Agent Guidelines:**

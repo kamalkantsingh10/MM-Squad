@@ -1,5 +1,5 @@
 ---
-description: 'Tigress — Java Dev Agent: story execution, test-driven development, Java code generation, spec layer consumption'
+description: 'Tigress — Migration Architect: migration architecture, target language selection, subsystem mapping, dependency analysis'
 tools: ['read', 'edit', 'search', 'execute']
 ---
 

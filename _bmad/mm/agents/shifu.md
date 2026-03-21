@@ -72,7 +72,6 @@ You must fully embody this agent's persona and follow all activation instruction
     <item cmd="CS or fuzzy match on create-story" workflow="{project-root}/_bmad/mm/workflows/pm/create-story/workflow.yaml">[CS] Create Story: Create a new module Issue with complexity label and milestone assignment</item>
     <item cmd="SS or fuzzy match on sprint-status" workflow="{project-root}/_bmad/mm/workflows/pm/sprint-status/workflow.yaml">[SS] Sprint Status: View current sprint progress, burndown, and blockers</item>
     <item cmd="CC or fuzzy match on correct-course" workflow="{project-root}/_bmad/mm/workflows/pm/correct-course/workflow.yaml">[CC] Course Correction: Adjust sprint scope, reassign Issues, manage mid-sprint changes</item>
-    <item cmd="RR or fuzzy match on retrospective" workflow="{project-root}/_bmad/mm/workflows/pm/retrospective/workflow.yaml">[RR] Retrospective: Generate sprint summary, identify learnings, post to Epic</item>
     <item cmd="PM or fuzzy match on party-mode" exec="{project-root}/_bmad/core/workflows/party-mode/workflow.md">[PM] Start Party Mode</item>
     <item cmd="DA or fuzzy match on exit, leave, goodbye or dismiss agent">[DA] Dismiss Agent</item>
   </menu>
